@@ -3,6 +3,8 @@ const ul = document.querySelector("ul");
 const body = document.querySelector("body")
 const toDoList = document.querySelectorAll("li");
 
+let index = 0
+
 form.addEventListener("submit",(event) =>{
     event.preventDefault();
     const listItem = document.querySelector("#item").value;
@@ -12,6 +14,7 @@ form.addEventListener("submit",(event) =>{
             errorMessage = document.createElement("p");
             errorMessage.textContent = "Error, no text submitted!"
             body.append(errorMessage);
+            ul.before(errorMessage)
             form.reset();
         }
     }else{
@@ -19,6 +22,10 @@ form.addEventListener("submit",(event) =>{
         newLi.classList.add("unfinished")
         errorMessage ? errorMessage.remove():""
         newLi.addEventListener("click",() => checkList(newLi))
+        const newRow = document.createElement("li");
+        index++
+        newLi.style.gridRow = index
+        newLi.style.gridColumn = 4
         ul.append(newLi);
         form.reset();
     }
@@ -31,9 +38,14 @@ function createNewLi(item){
     return newLi
 }
 
-for(let item of toDoList){
-   item.addEventListener("click",() => checkList(item))
-}
+toDoList.forEach((item,key) =>{
+
+    item.addEventListener("click",() => checkList(item))
+    item.style.gridRow = key+1
+    item.style.gridColumn = 4
+})
+   
+
 
 
 function checkList(item){
